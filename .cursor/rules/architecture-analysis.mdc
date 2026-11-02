@@ -1,0 +1,30 @@
+---
+description: Read-only IcePanel architecture analysis constraints
+alwaysApply: true
+---
+
+# Architecture analysis
+
+This repository analyses company source and stores IcePanel C4 models here. Company repositories stay read-only.
+
+## Evidence
+
+- Never invent services, APIs, connections, or dependencies.
+- Every proposed integration cites the source file that supports it.
+- Label each finding **confirmed** (code evidence), **inferred**, or **unknown**.
+- Shared libraries stay libraries. Do not model them as independently deployed services.
+- A larger application is not a set of independently deployable services unless deployment evidence says so.
+- Name legacy systems as legacy. Do not mark them deprecated unless the source says they are.
+
+```text
+confirmed: OrderApi calls PaymentClient — src/order/PaymentClient.java
+inferred: both services share a Kafka topic name; producer and consumer were not both found
+unknown: whether Billing still receives this event
+```
+
+## Boundaries
+
+- Do not modify company source repositories.
+- Never read or reproduce secrets, credentials, tokens, or private keys. Skip `.env`, key files, and credential stores.
+- Exclude build directories, dependencies, caches, and generated files (`node_modules`, `vendor`, `dist`, `build`, `target`, coverage, and similar).
+- Write documentation and architecture models only inside this project (`analysis/`, `architecture/`, `docs/`).
